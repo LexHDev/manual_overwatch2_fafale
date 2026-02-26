@@ -4,7 +4,7 @@ Game tracker: https://github.com/Fafale/manual_overwatch2_poptracker/releases/la
 
 ---
 
-A really basic Overwatch implementation for Archipelago. It works just like [League of Legends AP](https://github.com/gaithernOrg/LoLAP) and similars.
+A really basic Overwatch implementation for Archipelago. It works just like [League of Legends AP](https://github.com/gaithernOrg/LoLAP) and similars. Originaly by [Fafale](https://github.com/Fafale/manual_overwatch2_fafale), modified by myself. Most of the work here done by me is just adding the new heroes and removing the hero mastery mode from the apworld.
 
 It's a _Mcguffin game_[^1], so generation can sometimes fail if you disable too many locations AND using [Universal Tracker](https://github.com/FarisTheAncient/Archipelago/releases) is **extremely** recommended to avoid breaking the already simplistic logic.
 
@@ -59,4 +59,5 @@ For this one, you could either define "send all checks once reaching X eliminati
 
 
 [^1]: Archipelago games where you need to receive a certain quantity of an item to goal them.
+
 
