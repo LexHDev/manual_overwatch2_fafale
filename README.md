@@ -20,7 +20,7 @@ It's a _Mcguffin game_[^1], so generation can sometimes fail if you disable too 
 
 Items you can receive:
 
-- Access to all 42 Heroes, or only some roles (individual heroes can be toggled on/off)
+- Access to all 50 Heroes, or only some roles (individual heroes can be toggled on/off)
 - Access to Deathmatch gamemodes, if enabled
 
 Locations you can send:
@@ -59,3 +59,4 @@ For this one, you could either define "send all checks once reaching X eliminati
 
 
 [^1]: Archipelago games where you need to receive a certain quantity of an item to goal them.
+
