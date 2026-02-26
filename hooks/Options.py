@@ -7,6 +7,7 @@ from ..Helpers import is_option_enabled, get_option_value
 
 TANK_HERO_LIST = [
     "DVa",
+    "Domina",
     "Doomfist",
     "Hazard",
     "Junker Queen",
@@ -41,7 +42,10 @@ DAMAGE_HERO_LIST = [
     "Torbjorn",
     "Tracer",
     "Venture",
-    "Widowmaker"
+    "Widowmaker",
+    "Vendetta",
+    "Emre",
+    "Anran"
 ]
 DAMAGE_HERO_AMOUNT = len(DAMAGE_HERO_LIST)
 
@@ -56,27 +60,13 @@ SUPPORT_HERO_LIST = [
     "Lucio",
     "Mercy",
     "Moira",
-    "Zenyatta"
+    "Zenyatta",
+    "Mizuki",
+    "Jetpack Cat",
+    "Wuyang"
 ]
 SUPPORT_HERO_AMOUNT = len(SUPPORT_HERO_LIST)
 
-HERO_MASTERY_LIST = [
-    "Mercy",
-    "Reinhardt",
-    "Tracer",
-    "Sojourn",
-    "Winston",
-    "DVa",
-    "Echo",
-    "Genji",
-    "Lucio",
-    "Mei",
-    "Soldier 76",
-    "Kiriko",
-    "Cassidy",
-    "Brigitte"
-]
-HERO_MASTERY_AMOUNT = len(HERO_MASTERY_LIST)
 
 ####################################################################
 # NOTE: At the time that options are created, Manual has no concept of the multiworld or its own world.
@@ -224,57 +214,6 @@ class AvailableSupportHeroes(OptionSet):
     valid_keys = [hero_name for hero_name in SUPPORT_HERO_LIST]
     default = sorted(set([hero_name for hero_name in SUPPORT_HERO_LIST]))
 
-class IncludeHeroMasteries(Choice):
-    """
-    Choose how Hero Masteries are included in the randomizer.
-
-    Disabled: Hero Masteries aren't included in the randomizer.
-    Progressive: 3 Mastery items per hero, each one unlocks a course (Recruit -> Agent -> Veteran).
-    Complete: Only 1 Mastery item per hero, which unlocks all 3 courses for that hero.
-    """
-    display_name = "Include Hero Masteries"
-    option_disabled = 0
-    option_progressive = 1
-    option_complete = 2
-    default = 0
-
-class HeroMasteriesAmount(Range):
-    """
-    Can be ignored if include_hero_masteries is disabled.
-
-
-    Total amount of Hero Masteries that can appear in the item pool.
-    """
-    display_name = "Hero Masteries Amount"
-    range_start = 1
-    range_end = HERO_MASTERY_AMOUNT
-    default = HERO_MASTERY_AMOUNT
-
-class AvailableHeroMasteries(OptionSet):
-    """
-    Can be ignored if include_hero_masteries is disabled.
-
-    
-    List of available heroes that can appear in the item pool.
-    To avoid errors, emptying this list will work the same as if it's complete.
-
-    Attention: "D.Va" = "DVa", "Soldier: 76" = "Soldier 76", "Lúcio" = "Lucio"
-    """
-    display_name = "Available Hero Masteries"
-    valid_keys = [hero_name for hero_name in HERO_MASTERY_LIST]
-    default = sorted(set([hero_name for hero_name in HERO_MASTERY_LIST]))
-
-class HeroMasteryCheckAmount(Range):
-    """
-    Can be ignored if include_hero_masteries is disabled.
-
-    Number of locations on each course from each included Hero Mastery.
-    For example, if check amount is 5, each included Hero Mastery will have 15 checks in total.
-    """
-    display_name = "Hero Mastery Check Amount"
-    range_start = 1
-    range_end = 5
-    default = 3
 
 class IncludeDeathmatchChecks(Choice):
     """
@@ -324,10 +263,7 @@ def before_options_defined(options: dict) -> dict:
     options["enable_hero_elimination_checks"]   = EnableHeroEliminationChecks   #Toggle
     options["hero_elimination_check_amount"]    = HeroEliminationCheckAmount    #Range
 
-    options["include_hero_masteries"]       = IncludeHeroMasteries      #Choice
-    options["available_hero_masteries"]     = AvailableHeroMasteries    #OptionSet
-    options["hero_masteries_amount"]        = HeroMasteriesAmount       #Range
-    options["hero_mastery_check_amount"]    = HeroMasteryCheckAmount    #Range
+    # Hero Masteries removed — no options added
     
     options["include_deathmatch_checks"] = IncludeDeathmatchChecks  #Choice
     options["deathmatch_check_amount"]   = DeathmatchCheckAmount    #Range

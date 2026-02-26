@@ -33,10 +33,9 @@ import logging
 final_includes_ow2 = {}
 
 def manual_overwatch2_define_max_medals(multiworld: MultiWorld, player: int, print_log: bool):
-    TANK_HERO_AMOUNT = 13
-    DAMAGE_HERO_AMOUNT = 19
-    SUPPORT_HERO_AMOUNT = 11
-    HERO_MASTERY_AMOUNT = 14
+    TANK_HERO_AMOUNT = 14
+    DAMAGE_HERO_AMOUNT = 22
+    SUPPORT_HERO_AMOUNT = 14
 
     enable_tank_heroes = get_option_value(multiworld, player, "include_tank_heroes")
     aux_tank_amount = len(get_option_value(multiworld, player, "available_tank_heroes"))
@@ -60,18 +59,9 @@ def manual_overwatch2_define_max_medals(multiworld: MultiWorld, player: int, pri
     hero_ko_amount = get_option_value(multiworld, player, "hero_elimination_check_amount")
     LOC_hero_ko = hero_ko_amount*total_hero_amount if enable_hero_ko else 0
     
-    enable_mastery = get_option_value(multiworld, player, "include_hero_masteries")
-    mastery_checks = get_option_value(multiworld, player, "hero_mastery_check_amount")
-    aux_mastery_amount = len(get_option_value(multiworld, player, "available_hero_masteries"))
-    if aux_mastery_amount == 0: aux_mastery_amount = HERO_MASTERY_AMOUNT
-    mastery_amount = min(get_option_value(multiworld, player, "hero_masteries_amount"), aux_mastery_amount) if enable_mastery else 0
-    LOC_mastery = mastery_amount * mastery_checks * 3 if enable_mastery else 0
-    if enable_mastery == 1:
-        ITE_mastery = 3 * mastery_amount
-    elif enable_mastery == 2:
-        ITE_mastery = mastery_amount
-    else:
-        ITE_mastery = 0
+    # Hero Mastery mode removed, no mastery items or locations
+    ITE_mastery = 0
+    LOC_mastery = 0
     
     enable_deathmatch = get_option_value(multiworld, player, "include_deathmatch_checks")
     deathmatch_checks = get_option_value(multiworld, player, "deathmatch_check_amount")
@@ -87,16 +77,15 @@ def manual_overwatch2_define_max_medals(multiworld: MultiWorld, player: int, pri
 
     LOC_wins = 18
 
-    ITE_total =            ITE_heroes  + ITE_mastery + ITE_deathmatch
-    LOC_total = LOC_wins + LOC_hero_ko + LOC_mastery + LOC_deathmatch
+    ITE_total =            ITE_heroes  + ITE_deathmatch
+    LOC_total = LOC_wins + LOC_hero_ko + LOC_deathmatch
 
     if print_log:
         logging.info(f"Manual Overwatch 2 - Medal Count for SlotID {player}:")
-        logging.info(f"  HERO AND MASTERY AMOUNT:")
+        logging.info(f"  HERO AMOUNT:")
         logging.info(f"  - Tank:    {tank_amount:02d}")
         logging.info(f"  - Damage:  {damage_amount:02d}")
         logging.info(f"  - Support: {support_amount:02d}")
-        logging.info(f"  - Mastery: {mastery_amount:02d}")
         logging.info("")
         logging.info(f"  ITEMS:")
         logging.info(f"  - Heroes:     {ITE_heroes}")
@@ -156,8 +145,7 @@ def before_create_items_starting(item_pool: list, world: World, multiworld: Mult
     final_includes_ow2[player] = {
         'tanks':[],
         'damages':[],
-        'supports':[],
-        'masteries':[]
+        'supports':[]
     }
     
     locationNamesToRemove = [] # List of location names
@@ -167,68 +155,6 @@ def before_create_items_starting(item_pool: list, world: World, multiworld: Mult
     enable_hero_ko = is_option_enabled(multiworld, player, "enable_hero_elimination_checks")
     hero_ko_checks = get_option_value(multiworld, player, "hero_elimination_check_amount")
 
-    MAX_HERO_MASTERY_CHECKS = 6
-    include_mastery_mode = get_option_value(multiworld, player, "include_hero_masteries")
-    enable_masteries = include_mastery_mode >= 1
-
-    mastery_list = []
-    if enable_masteries is True:
-        mastery_check_amount = get_option_value(multiworld, player, "hero_mastery_check_amount")
-
-        all_mastery_list = [
-            "Mercy",
-            "Reinhardt",
-            "Tracer",
-            "Sojourn",
-            "Winston",
-            "DVa",
-            "Echo",
-            "Genji",
-            "Lucio",
-            "Mei",
-            "Soldier 76",
-            "Kiriko",
-            "Cassidy",
-            "Brigitte"
-        ]
-
-        available_mastery_list = []
-        if len(get_option_value(multiworld, player, "available_hero_masteries")) > 0:
-            available_mastery_list.extend(get_option_value(multiworld, player, "available_hero_masteries"))
-        else:
-            available_mastery_list.extend(all_mastery_list)
-        
-        num_included_masteries = min(get_option_value(multiworld, player, "hero_masteries_amount"), len(available_mastery_list))
-
-        for _ in range(num_included_masteries):
-            hero_name = random.choice(list(available_mastery_list))
-
-            final_includes_ow2[player]['masteries'].append(hero_name)
-            mastery_list.append(hero_name)
-
-            available_mastery_list.remove(hero_name)
-            all_mastery_list.remove(hero_name)
-
-            for i in range(mastery_check_amount+1, MAX_HERO_MASTERY_CHECKS):
-                locationNamesToRemove.append(f"Hero Mastery - {hero_name} - Recruit - Check {i}")
-                locationNamesToRemove.append(f"Hero Mastery - {hero_name} - Agent - Check {i}")
-                locationNamesToRemove.append(f"Hero Mastery - {hero_name} - Veteran - Check {i}")
-        
-        for hero_name in all_mastery_list:
-            itemNamesToRemove.append(f"Hero Mastery - {hero_name}")
-            itemNamesToRemove.append(f"Hero Mastery - {hero_name}")
-            itemNamesToRemove.append(f"Hero Mastery - {hero_name}")
-            for i in range(1, MAX_HERO_MASTERY_CHECKS):
-                locationNamesToRemove.append(f"Hero Mastery - {hero_name} - Recruit - Check {i}")
-                locationNamesToRemove.append(f"Hero Mastery - {hero_name} - Agent - Check {i}")
-                locationNamesToRemove.append(f"Hero Mastery - {hero_name} - Veteran - Check {i}")
-        
-        progressive_masteries = (include_mastery_mode == 1)
-
-        if progressive_masteries is False:
-            for hero_name in mastery_list:
-                itemNamesToRemove.append("Hero Mastery - " + hero_name)
-                itemNamesToRemove.append("Hero Mastery - " + hero_name)
 
 
     include_tanks = is_option_enabled(multiworld, player, "include_tank_heroes")
@@ -252,7 +178,8 @@ def before_create_items_starting(item_pool: list, world: World, multiworld: Mult
             "Sigma",
             "Winston",
             "Wrecking Ball",
-            "Zarya"
+            "Zarya",
+            "Domina"
         ]
 
         available_tank_list = []
@@ -311,7 +238,10 @@ def before_create_items_starting(item_pool: list, world: World, multiworld: Mult
             "Torbjorn",
             "Tracer",
             "Venture",
-            "Widowmaker"
+            "Widowmaker",
+            "Vendetta",
+            "Emre",
+            "Anran"
         ]
 
         available_damage_list = []
@@ -361,7 +291,11 @@ def before_create_items_starting(item_pool: list, world: World, multiworld: Mult
             "Lucio",
             "Mercy",
             "Moira",
-            "Zenyatta"
+            "Zenyatta",
+            # newly added support heroes
+            "Mizuki",
+            "Jetpack Cat",
+            "Wuyang"
         ]
 
         available_support_list = []

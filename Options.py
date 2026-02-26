@@ -45,4 +45,13 @@ if starting_items:
                     manual_options[option_name].__doc__ = "Should items/locations linked to this option be enabled?"
 
 manual_options = after_options_defined(manual_options)
-manual_options_data = make_dataclass('ManualOptionsClass', manual_options.items(), bases=(PerGameCommonOptions,))
+
+# Convert option classes to dataclass fields while preserving their defaults
+dataclass_fields = []
+for option_name, option_class in manual_options.items():
+    if hasattr(option_class, 'default'):
+        dataclass_fields.append((option_name, option_class, option_class.default))
+    else:
+        dataclass_fields.append((option_name, option_class))
+
+manual_options_data = make_dataclass('ManualOptionsClass', dataclass_fields, bases=(PerGameCommonOptions,))

@@ -21,14 +21,12 @@ It's a _Mcguffin game_[^1], so generation can sometimes fail if you disable too 
 Items you can receive:
 
 - Access to all 42 Heroes, or only some roles (individual heroes can be toggled on/off)
-- Access to all 14 Hero Masteries, if enabled (individual Masteries can be toggled on/off)
 - Access to Deathmatch gamemodes, if enabled
 
 Locations you can send:
 
 - Win each gamemode as each enabled role (6 checks currently forced enabled for all included roles)
 - Eliminate X enemies with each unlocked character, if enabled (up to 5 checks per Hero)
-- Complete each course from Hero Mastery mode, if enabled (up to 5 checks per course, 15 per Hero)
 - Win Solo/Team Deathmatch matches, if enabled (up to 5 checks each)
 
 <h2>Yaml Options</h2>
@@ -53,14 +51,6 @@ There's a fair number of yaml options, so here they are organized into groups:
 
 For this one, you could either define "send all checks once reaching X eliminations" or "send a check for each X enemies eliminated", since all checks are in logic once you unlock the hero to play with.
 
-<h3>Hero Masteries</h3>
-
-- `include_hero_masteries` - Enable checks for completing Hero Mastery courses.
-- `available_hero_masteries` - Change this list to exclude some heroes from appearing.
-- `hero_masteries_amount` - Number of heroes with this role to enter the item pool, chosen from the above list.
-- `hero_mastery_check_amount` - How many checks each course has. (Keep in mind each hero has 3 courses)
-
-Please keep in mind that heroes you unlock to play are **different items** from heroes you unlock to do their Hero Mastery courses. So receiving a `DVa` **doesn't** mean you're logically able to do her Hero Mastery, but receiving a `Hero Mastery - DVa` does, and vice versa.
 
 <h3>Deathmatch Checks</h3>
 

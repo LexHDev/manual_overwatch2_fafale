@@ -18,10 +18,6 @@
         "hidden": true,
         "yaml_option": ["include_support_heroes"]
     },
-    "Hero Masteries": {
-        "hidden": false,
-        "yaml_option": ["include_hero_masteries"]
-    },
     "Hero Eliminations": {
         "hidden": true,
         "yaml_option": ["enable_hero_elimination_checks"]
